@@ -1246,19 +1246,21 @@ function analyzeCustomChainPattern(sequence) {
   let prediction = null;
   let confidence = 0;
 
-  if (currentLength >= 1 && currentLength <= 3) {
-    // Bẻ chuỗi khi chuỗi ngắn 1-3
-    prediction = currentSegment.value === 'T' ? 'X' : 'T';
-    confidence = 0.75 + (currentLength * 0.05);
-  } else if (currentLength > 3 && currentLength <= 6) {
-    // Kiểm tra các mẫu hình khác cho chuỗi 3-6
-    const result = detectAdvancedCauPattern(sequence, segments);
-    if (result.detectedPatterns.length > 0) {
+  // Phân tích dựa trên các mẫu và quy luật
+  const patternAnalysis = detectAdvancedCauPattern(sequence, segments);
+  const breakAnalysis = analyzeEnhancedBreakpoint(sequence, segments);
+
+  if (patternAnalysis.detectedPatterns.length > 0) {
+    // Ưu tiên theo mẫu đã phát hiện
+    if (patternAnalysis.patternType === 'Xen kẽ') {
       prediction = currentSegment.value === 'T' ? 'X' : 'T';
-      confidence = 0.7 + (result.detectedPatterns.length * 0.05);
+      confidence = 0.7 + (patternAnalysis.maturity * 0.2);
+    } else if (breakAnalysis.breakProbability > 0.7) {
+      prediction = currentSegment.value === 'T' ? 'X' : 'T';
+      confidence = breakAnalysis.breakProbability;
     } else {
       prediction = currentSegment.value;
-      confidence = 0.65;
+      confidence = 0.6 + (patternAnalysis.maturity * 0.2);
     }
   } else if (currentLength > 6) {
     // Theo chuỗi dài 6+ nhưng vẫn xem xét bẻ
@@ -2259,12 +2261,6 @@ function loadFromLocalStorage() {
 function initApp() {
   // Set current year in footer
   document.getElementById('current-year').textContent = new Date().getFullYear();
-
-  // Attach event listeners
-  document.getElementById('tai-btn').addEventListener('click', () => addToSequence('T'));
-  document.getElementById('xiu-btn').addEventListener('click', () => addToSequence('X'));
-  document.getElementById('delete-last').addEventListener('click', deleteLastResult);
-  document.getElementById('clear-all').addEventListener('click', clearAllResults);
   // Tab switching
   document.querySelectorAll('#analysis-tabs .tab-item').forEach(tab => {
     tab.addEventListener('click', () => {
