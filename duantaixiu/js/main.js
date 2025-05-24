@@ -1861,10 +1861,31 @@ function analyzeSequence() {
 
   state.analyzing = true;
   
-  // Show loading indicator
+  // Show loading indicator and analysis animation
   const loadingIndicator = document.getElementById('loading-indicator');
+  const predictionDisplay = document.querySelector('.prediction-display');
+  
   if (loadingIndicator) {
     loadingIndicator.style.display = 'inline-block';
+  }
+  
+  // Add analyzing class for glow effect
+  if (predictionDisplay) {
+    predictionDisplay.classList.add('analyzing');
+    
+    // Create and show robot analysis animation
+    const analysisAnimation = document.createElement('div');
+    analysisAnimation.className = 'analysis-animation active';
+    analysisAnimation.innerHTML = `
+      <div class="robot-eye"></div>
+      <div class="scan-line"></div>
+      <div class="analysis-circles">
+        <div class="analysis-circle"></div>
+        <div class="analysis-circle"></div>
+        <div class="analysis-circle"></div>
+      </div>
+    `;
+    predictionDisplay.appendChild(analysisAnimation);
   }
   
   // Phân tích Kubet
@@ -1968,14 +1989,29 @@ function analyzeSequence() {
       state.prediction = { prediction: null, confidence: 0 };
       updatePredictionDisplay();
     } finally {
-      state.analyzing = false;
-      
-      // Cập nhật giao diện
-      updatePredictionDisplay();
-      updateStats();
-      updateCauAnalysis();
-      updatePatternAnalysis();
-      updateKubetAnalysis();
+      // Remove analysis animation after delay
+      setTimeout(() => {
+        state.analyzing = false;
+        
+        const predictionDisplay = document.querySelector('.prediction-display');
+        const analysisAnimation = document.querySelector('.analysis-animation');
+        
+        if (predictionDisplay) {
+          predictionDisplay.classList.remove('analyzing');
+        }
+        
+        if (analysisAnimation) {
+          analysisAnimation.classList.remove('active');
+          setTimeout(() => analysisAnimation.remove(), 300);
+        }
+        
+        // Cập nhật giao diện
+        updatePredictionDisplay();
+        updateStats();
+        updateCauAnalysis();
+        updatePatternAnalysis();
+        updateKubetAnalysis();
+      }, 1500);
     }
   }, 500);
 }
