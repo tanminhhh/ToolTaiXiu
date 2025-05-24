@@ -810,15 +810,16 @@ p {
 }
 
 .stat-item {
-  background: var(--light);
+  background: rgba(30, 30, 60, 0.5);
   padding: var(--space-4);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   text-align: center;
   transition: all 0.3s ease;
-  border: 1px solid var(--gray-200);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   position: relative;
   overflow: hidden;
+  color: var(--light);
 }
 
 .stat-item::before {
@@ -851,7 +852,7 @@ p {
 .stat-label {
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--gray-600);
+  color: var(--gray-300);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
