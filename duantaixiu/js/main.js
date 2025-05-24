@@ -2340,26 +2340,22 @@ function createParticles() {
 
 // Setup event listeners
 function setupEventListeners() {
-  const taiBtn = document.getElementById('tai-btn');
-  const xiuBtn = document.getElementById('xiu-btn');
-  const deleteBtn = document.getElementById('delete-last');
-  const clearBtn = document.getElementById('clear-all');
-  
-  if (taiBtn) taiBtn.onclick = () => addToSequence('T');
-  if (xiuBtn) xiuBtn.onclick = () => addToSequence('X');
-  if (deleteBtn) deleteBtn.onclick = deleteLastResult;
-  if (clearBtn) clearBtn.onclick = clearAllResults;
+  // Button click handlers
+  document.getElementById('tai-btn')?.addEventListener('click', () => addToSequence('T'));
+  document.getElementById('xiu-btn')?.addEventListener('click', () => addToSequence('X'));
+  document.getElementById('delete-last')?.addEventListener('click', deleteLastResult);
+  document.getElementById('clear-all')?.addEventListener('click', clearAllResults);
 
   // Tab switching
   document.querySelectorAll('#analysis-tabs .tab-item').forEach(tab => {
-    tab.onclick = () => {
+    tab.addEventListener('click', () => {
       const tabId = tab.getAttribute('data-tab');
       if (tabId) switchTab(tabId);
-    }; 
+    });
   });
 
   // Keyboard shortcuts
-  document.onkeydown = (e) => {
+  document.addEventListener('keydown', (e) => {
     if (e.key.toLowerCase() === 't') {
       addToSequence('T');
     } else if (e.key.toLowerCase() === 'x') {
@@ -2367,11 +2363,11 @@ function setupEventListeners() {
     } else if (e.key === 'Backspace' || e.key === 'Delete') {
       deleteLastResult();
     }
-  };
+  });
 }
 
 // Initialize when the page is loaded
-document.addEventListener('DOMContentLoaded', function() {
+window.addEventListener('load', function() {
   createParticles();
   setupEventListeners();
   initApp();
