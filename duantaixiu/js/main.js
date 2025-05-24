@@ -1627,7 +1627,6 @@ function updateKubetAnalysis() {
       ruleAlternating.querySelector('.rule-status').textContent = "Không kích hoạt";
     }
 
-    ```tool_code
     // Mẫu kéo theo
     if (state.kubetAnalysis.detailedRules.followingPattern) {
       ruleFollowing.classList.add('active');
@@ -2308,30 +2307,35 @@ function createParticles() {
   }
 }
 
+// Initialize when the page is loaded
 document.addEventListener('DOMContentLoaded', function() {
   createParticles();
-  // Initialize when the page is loaded
-  initApp();
-});
-// Set up all event listeners
-function setupEventListeners() {
-  // Tai/Xiu buttons
-  const taiBtn = document.getElementById('tai-btn');
-  const xiuBtn = document.getElementById('xiu-btn');
-  if (taiBtn) taiBtn.addEventListener('click', () => addToSequence('T'));
-  if (xiuBtn) xiuBtn.addEventListener('click', () => addToSequence('X'));
 
-  // Delete/Clear buttons  
-  const deleteLastBtn = document.getElementById('delete-last');
-  const clearAllBtn = document.getElementById('clear-all');
-  if (deleteLastBtn) deleteLastBtn.addEventListener('click', deleteLastResult);
-  if (clearAllBtn) clearAllBtn.addEventListener('click', clearAllResults);
+  // Attach event listeners directly
+  document.getElementById('tai-btn')?.addEventListener('click', () => addToSequence('T'));
+  document.getElementById('xiu-btn')?.addEventListener('click', () => addToSequence('X'));
+  document.getElementById('delete-last')?.addEventListener('click', deleteLastResult);
+  document.getElementById('clear-all')?.addEventListener('click', clearAllResults);
 
   // Tab switching
-  const tabItems = document.querySelectorAll('#analysis-tabs .tab-item');
-  tabItems.forEach(tab => {
+  document.querySelectorAll('#analysis-tabs .tab-item').forEach(tab => {
     tab.addEventListener('click', () => {
-      switchTab(tab.getAttribute('data-tab'));
+      const tabId = tab.getAttribute('data-tab');
+      if (tabId) switchTab(tabId);
     });
   });
-}
+
+  // Keyboard shortcuts
+  document.addEventListener('keydown', (e) => {
+    if (e.key.toLowerCase() === 't') {
+      addToSequence('T');
+    } else if (e.key.toLowerCase() === 'x') {
+      addToSequence('X');
+    } else if (e.key === 'Backspace' || e.key === 'Delete') {
+      deleteLastResult();
+    }
+  });
+
+  // Initialize app
+  initApp();
+});
