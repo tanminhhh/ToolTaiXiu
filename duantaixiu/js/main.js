@@ -883,13 +883,37 @@ function kubetProfessionalAnalysis(sequence) {
   // Đánh giá chất lượng điểm bẻ cầu
   let breakPointQuality = 0;
   
-  // Quyết định dự đoán
-  if (be3Rule || rule8Sessions || fibonacciRule) {
-    // Nếu có các dấu hiệu bẻ cầu mạnh
+  // Quyết định dự đoán theo độ dài cầu
+  const currentStreak = segments.length > 0 ? segments[segments.length - 1].count : 0;
+  
+  if (currentStreak >= 1 && currentStreak <= 3) {
+    // Cầu ngắn 1-3: bẻ cầu
     prediction = oppositeValue;
-    bestStrategy = "Bẻ cầu";
-    breakPointQuality = Math.min(0.95, 0.5 + (matchedRules / 6) * 0.5);
-    confidence = Math.min(0.9, 0.6 + matchedRules * 0.07);
+    bestStrategy = "Bẻ cầu (cầu ngắn 1-3)";
+    confidence = 0.7 + (currentStreak * 0.05);
+    breakPointQuality = 0.8;
+  } else if (currentStreak > 3 && currentStreak <= 6) {
+    // Cầu 3-6: kiểm tra các mẫu
+    if (alternatingPattern || followingPattern || fibonacciRule) {
+      prediction = oppositeValue;
+      bestStrategy = "Bẻ cầu theo mẫu (cầu 3-6)";
+      confidence = 0.7 + (matchedRules * 0.05);
+    } else {
+      prediction = currentValue;
+      bestStrategy = "Theo cầu (không có mẫu đặc biệt)";
+      confidence = 0.6;
+    }
+  } else if (currentStreak > 6) {
+    // Cầu dài 6+: theo cầu nhưng vẫn xem xét bẻ
+    if (matchedRules >= 3 || rule8Sessions || fibonacciRule) {
+      prediction = oppositeValue;
+      bestStrategy = "Bẻ cầu có điều kiện (cầu 6+)";
+      confidence = 0.8;
+    } else {
+      prediction = currentValue;
+      bestStrategy = "Theo cầu dài (6+)";
+      confidence = 0.7 + Math.min(0.2, (currentStreak - 6) * 0.02);
+    }
   } else if (alternatingPattern) {
     // Nếu có mẫu xen kẽ rõ ràng
     prediction = sequence[sequence.length - 1] === sequence[sequence.length - 2] ? oppositeValue : currentValue;
