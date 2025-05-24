@@ -2181,20 +2181,10 @@ function initApp() {
   document.getElementById('xiu-btn').addEventListener('click', () => addToSequence('X'));
   document.getElementById('delete-last').addEventListener('click', deleteLastResult);
   document.getElementById('clear-all').addEventListener('click', clearAllResults);
-  document.getElementById('show-chart-modal').addEventListener('click', toggleChartModal);
-  document.getElementById('close-modal').addEventListener('click', toggleChartModal);
-  
   // Tab switching
   document.querySelectorAll('#analysis-tabs .tab-item').forEach(tab => {
     tab.addEventListener('click', () => {
       switchTab(tab.getAttribute('data-tab'));
-    });
-  });
-  
-  // Chart type switching
-  document.querySelectorAll('#chart-tabs .tab-item').forEach(tab => {
-    tab.addEventListener('click', () => {
-      switchChartType(tab.getAttribute('data-tab'));
     });
   });
   
