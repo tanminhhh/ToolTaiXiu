@@ -1892,6 +1892,14 @@ function analyzeSequence() {
   try {
     const kubetAnalysis = kubetProfessionalAnalysis(state.sequence);
     state.kubetAnalysis = kubetAnalysis;
+    
+    // Đặt trọng số cho phương pháp Kubet là 2
+    state.predictionModel.weights = {
+      cauAnalysis: 0.5,
+      neural: 0.25,
+      markov: 0.15,
+      goldenRatio: 0.1
+    };
   } catch (e) {
     console.error("Lỗi khi phân tích Kubet:", e);
     state.kubetAnalysis = { 
