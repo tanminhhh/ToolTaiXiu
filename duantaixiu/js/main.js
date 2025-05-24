@@ -1637,7 +1637,7 @@ function updateStats() {
     const longestStreak = segments.reduce((max, segment) => Math.max(max, segment.count), 0);
     document.getElementById('stat-longest-streak').textContent = longestStreak;
     
-    // Calculate prediction accuracy if we have history
+    // Calculate prediction stats if we have history
     if (state.historyData.length > 0) {
       const predictionsWithResult = state.historyData.filter(item => 
         item.prediction && item.prediction.prediction !== null
@@ -1645,13 +1645,24 @@ function updateStats() {
       
       if (predictionsWithResult.length > 0) {
         const successfulPredictions = predictionsWithResult.filter(item => item.wasSuccessful).length;
+        const wrongPredictions = predictionsWithResult.length - successfulPredictions;
         const accuracy = successfulPredictions / predictionsWithResult.length;
+        
         document.getElementById('stat-accuracy').textContent = formatPercent(accuracy);
+        document.getElementById('stat-total-predictions').textContent = predictionsWithResult.length;
+        document.getElementById('stat-correct-predictions').textContent = successfulPredictions;
+        document.getElementById('stat-wrong-predictions').textContent = wrongPredictions;
       } else {
         document.getElementById('stat-accuracy').textContent = '--';
+        document.getElementById('stat-total-predictions').textContent = '0';
+        document.getElementById('stat-correct-predictions').textContent = '0';
+        document.getElementById('stat-wrong-predictions').textContent = '0';
       }
     } else {
       document.getElementById('stat-accuracy').textContent = '--';
+      document.getElementById('stat-total-predictions').textContent = '0';
+      document.getElementById('stat-correct-predictions').textContent = '0';
+      document.getElementById('stat-wrong-predictions').textContent = '0';
     }
     
     // Kiểm tra tính ngẫu nhiên nếu có đủ dữ liệu
