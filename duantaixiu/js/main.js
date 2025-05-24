@@ -1218,12 +1218,11 @@ function getEnhancedPrediction(sequence) {
 
   // Thu thập dự đoán từ tất cả mô hình với mô hình nâng cao cho Tài Xỉu
   const models = [
+    { name: 'kubet', func: kubetProfessionalAnalysis, weight: 2.0 },
     { name: 'cauAnalysis', func: performEnhancedCauAnalysis, weight: 0.45 },
     { name: 'neural', func: neuralNetworkEmulation, weight: 0.20 },
     { name: 'markov', func: markovChainPrediction, weight: 0.25 },
     { name: 'goldenRatio', func: goldenRatioPrediction, weight: 0.10 }
-    // Tạm thời bỏ qua mô hình chưa định nghĩa
-    // { name: 'kubetTrend', func: kubetTrendAnalysis, weight: 0.05 }
   ];
 
   // Phân tích đặc thù theo quy luật cầu Tài Xỉu
