@@ -2338,9 +2338,11 @@ function createParticles() {
   }
 }
 
-// Setup event listeners
-function setupEventListeners() {
-  // Button click handlers
+// Initialize when the page is loaded
+document.addEventListener('DOMContentLoaded', function() {
+  createParticles();
+
+  // Attach event listeners directly
   document.getElementById('tai-btn')?.addEventListener('click', () => addToSequence('T'));
   document.getElementById('xiu-btn')?.addEventListener('click', () => addToSequence('X'));
   document.getElementById('delete-last')?.addEventListener('click', deleteLastResult);
@@ -2364,11 +2366,7 @@ function setupEventListeners() {
       deleteLastResult();
     }
   });
-}
 
-// Initialize when the page is loaded
-window.addEventListener('load', function() {
-  createParticles();
-  setupEventListeners();
+  // Initialize app
   initApp();
 });
