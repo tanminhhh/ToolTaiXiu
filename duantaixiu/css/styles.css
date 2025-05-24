@@ -688,6 +688,36 @@ p {
   text-shadow: 0 0 15px rgba(30, 39, 46, 0.5);
 }
 
+.tips-section {
+  padding: var(--space-4);
+}
+
+.tips-section h4 {
+  color: var(--accent-cyan);
+  margin: var(--space-4) 0 var(--space-2);
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.tips-section ul {
+  list-style-type: none;
+  padding-left: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.tips-section ul li {
+  position: relative;
+  margin-bottom: var(--space-2);
+  line-height: 1.5;
+}
+
+.tips-section ul li::before {
+  content: "•";
+  color: var(--accent-cyan);
+  position: absolute;
+  left: -1rem;
+}
+
 .prediction-confidence {
   font-size: 1.1rem;
   color: var(--light);
