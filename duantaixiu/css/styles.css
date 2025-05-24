@@ -857,6 +857,15 @@ p {
 }
 
 /* Tabs */
+:root {
+  --primary: #6a11cb;
+  --gray-200: rgba(255, 255, 255, 0.1);
+  --gray-600: rgba(255, 255, 255, 0.6);
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+}
+
 .tabs {
   display: flex;
   list-style: none;
@@ -864,6 +873,7 @@ p {
   margin-bottom: var(--space-5);
   overflow-x: auto;
   scrollbar-width: none;
+  padding: 0;
 }
 
 .tabs::-webkit-scrollbar {
@@ -878,6 +888,11 @@ p {
   position: relative;
   transition: all 0.3s ease;
   white-space: nowrap;
+  text-decoration: none;
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
 }
 
 .tab-item::after {
