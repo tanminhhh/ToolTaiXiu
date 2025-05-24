@@ -805,8 +805,48 @@ function kubetProfessionalAnalysis(sequence) {
 
   // Phân tích cầu và phân đoạn
   const segments = segmentSequence(sequence);
+  const currentSegment = segments[segments.length - 1];
+  const currentLength = currentSegment.count;
+  const currentValue = currentSegment.value;
+  const oppositeValue = currentValue === 'T' ? 'X' : 'T';
 
-  // Phân tích các quy luật đặc thù của Kubet
+  // Phân tích cầu dài
+  let prediction = null;
+  let confidence = 0;
+  let bestStrategy = "Chờ phân tích";
+  let patternType = "Đang phân tích";
+
+  // Phân tích dựa vào độ dài cầu
+  if (currentLength >= 8) {
+    prediction = oppositeValue;
+    confidence = 0.8;
+    bestStrategy = "Bẻ cầu (cầu quá dài)";
+    patternType = "Cầu dài 8+";
+  } else if (currentLength >= 5) {
+    prediction = oppositeValue;
+    confidence = 0.7;
+    bestStrategy = "Bẻ cầu (cầu dài)";
+    patternType = "Cầu dài 5+";
+  } else if (currentLength >= 3) {
+    prediction = currentValue;
+    confidence = 0.65;
+    bestStrategy = "Theo cầu (đã ổn định)";
+    patternType = "Cầu ổn định";
+  } else {
+    prediction = currentValue;
+    confidence = 0.55;
+    bestStrategy = "Theo cầu (chờ ổn định)";
+    patternType = "Cầu mới";
+  }
+
+  // Phân tích điểm bẻ cầu
+  const breakAnalysis = analyzeEnhancedBreakpoint(sequence, segments);
+  if (breakAnalysis.breakProbability > 0.8) {
+    prediction = oppositeValue;
+    confidence = breakAnalysis.breakProbability;
+    bestStrategy = "Bẻ cầu (điểm bẻ tốt)";
+    patternType = "Điểm bẻ cầu";
+  }
 
   // 1. Quy luật "bẻ cầu 3" - bẻ cầu sau 3 lần xuất hiện liên tiếp
   let be3Rule = false;
@@ -963,19 +1003,14 @@ function kubetProfessionalAnalysis(sequence) {
   return {
     prediction,
     confidence,
-    signalStrength,
-    breakPointQuality,
+    signalStrength: confidence,
+    breakPointQuality: breakAnalysis.breakProbability,
     patternType,
     bestStrategy,
-    matchedRules,
-    totalRules: rules.length,
     detailedRules: {
-      be3Rule,
-      rule8Sessions,
-      fibonacciRule,
-      alternatingPattern,
-      followingPattern,
-      goldenRatioMatch
+      longStreak: currentLength >= 5,
+      breakPoint: breakAnalysis.breakProbability > 0.8,
+      stableStreak: currentLength >= 3
     }
   };
 }
