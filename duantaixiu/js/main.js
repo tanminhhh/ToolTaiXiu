@@ -2122,18 +2122,6 @@ function clearAllResults() {
   saveToLocalStorage();
 }
 
-// Toggle chart modal
-function toggleChartModal() {
-  state.showChartModal = !state.showChartModal;
-  const modal = document.getElementById('chart-modal');
-
-  if (state.showChartModal) {
-    modal.classList.add('show');
-  } else {
-    modal.classList.remove('show');
-  }
-}
-
 // Switch tabs
 function switchTab(tabId) {
   state.activeTab = tabId;
@@ -2300,13 +2288,8 @@ function initApp() {
     }
   });
 
-  // Add click event to close modal when clicking outside
-  const modal = document.getElementById('chart-modal');
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) {
-      toggleChartModal();
-    }
-  });
+  // Initialize all event listeners
+  setupEventListeners();
 
   // Load saved data
   loadFromLocalStorage();
@@ -2330,3 +2313,25 @@ document.addEventListener('DOMContentLoaded', function() {
   // Initialize when the page is loaded
   initApp();
 });
+// Set up all event listeners
+function setupEventListeners() {
+  // Tai/Xiu buttons
+  const taiBtn = document.getElementById('tai-btn');
+  const xiuBtn = document.getElementById('xiu-btn');
+  if (taiBtn) taiBtn.addEventListener('click', () => addToSequence('T'));
+  if (xiuBtn) xiuBtn.addEventListener('click', () => addToSequence('X'));
+
+  // Delete/Clear buttons  
+  const deleteLastBtn = document.getElementById('delete-last');
+  const clearAllBtn = document.getElementById('clear-all');
+  if (deleteLastBtn) deleteLastBtn.addEventListener('click', deleteLastResult);
+  if (clearAllBtn) clearAllBtn.addEventListener('click', clearAllResults);
+
+  // Tab switching
+  const tabItems = document.querySelectorAll('#analysis-tabs .tab-item');
+  tabItems.forEach(tab => {
+    tab.addEventListener('click', () => {
+      switchTab(tab.getAttribute('data-tab'));
+    });
+  });
+}
