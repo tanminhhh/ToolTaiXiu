@@ -1235,6 +1235,46 @@ function getUltraPrecisePrediction(sequence) {
  * Cải tiến thuật toán tổng hợp cho Tài Xỉu và Kubet với hiệu suất lịch sử
  * Áp dụng các kỹ thuật học máy nâng cao và phân tích cầu Tài Xỉu đặc thù
  */
+function analyzeCustomChainPattern(sequence) {
+  if (sequence.length < 3) return { prediction: null, confidence: 0 };
+  
+  const segments = segmentSequence(sequence);
+  const currentSegment = segments[segments.length - 1];
+  const currentLength = currentSegment.count;
+  
+  // Phân tích theo quy luật chuỗi
+  let prediction = null;
+  let confidence = 0;
+  
+  if (currentLength >= 1 && currentLength <= 3) {
+    // Bẻ chuỗi khi chuỗi ngắn 1-3
+    prediction = currentSegment.value === 'T' ? 'X' : 'T';
+    confidence = 0.75 + (currentLength * 0.05);
+  } else if (currentLength > 3 && currentLength <= 6) {
+    // Kiểm tra các mẫu hình khác cho chuỗi 3-6
+    const result = detectAdvancedCauPattern(sequence, segments);
+    if (result.detectedPatterns.length > 0) {
+      prediction = currentSegment.value === 'T' ? 'X' : 'T';
+      confidence = 0.7 + (result.detectedPatterns.length * 0.05);
+    } else {
+      prediction = currentSegment.value;
+      confidence = 0.65;
+    }
+  } else if (currentLength > 6) {
+    // Theo chuỗi dài 6+ nhưng vẫn xem xét bẻ
+    const breakAnalysis = analyzeEnhancedBreakpoint(sequence, segments);
+    if (breakAnalysis.breakProbability > 0.8) {
+      prediction = currentSegment.value === 'T' ? 'X' : 'T';
+      confidence = breakAnalysis.breakProbability;
+    } else {
+      prediction = currentSegment.value;
+      confidence = 0.7 + Math.min(0.2, (currentLength - 6) * 0.02);
+    }
+  }
+  
+  return { prediction, confidence };
+}
+
 function getEnhancedPrediction(sequence) {
   if (sequence.length < 5) {
     return { prediction: null, confidence: 0 };
@@ -1242,7 +1282,8 @@ function getEnhancedPrediction(sequence) {
 
   // Thu thập dự đoán từ tất cả mô hình với mô hình nâng cao cho Tài Xỉu
   const models = [
-    { name: 'kubet', func: kubetProfessionalAnalysis, weight: 2.0 },
+    { name: 'kubet', func: kubetProfessionalAnalysis, weight: 1.5 },
+    { name: 'chainPattern', func: analyzeCustomChainPattern, weight: 0.5 }, // Thêm quy luật mới
     { name: 'cauAnalysis', func: performEnhancedCauAnalysis, weight: 0.45 },
     { name: 'neural', func: neuralNetworkEmulation, weight: 0.20 },
     { name: 'markov', func: markovChainPrediction, weight: 0.25 },
