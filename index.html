@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Baccarat Prediction Tool</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1><i class="fas fa-chart-line"></i> Advanced Baccarat Predictor</h1>
+            <div class="header-controls">
+                <button id="newShoe" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> New Shoe
+                </button>
+                <button id="clearHistory" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Clear History
+                </button>
+                <select id="algorithmMode" class="select-control">
+                    <option value="balanced">Balanced Mode</option>
+                    <option value="conservative">Conservative Mode</option>
+                    <option value="aggressive">Aggressive Mode</option>
+                </select>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Left Panel - Input & Predictions -->
+            <div class="left-panel">
+                <!-- Current Predictions -->
+                <div class="card">
+                    <h3><i class="fas fa-crystal-ball"></i> Advanced AI Predictions</h3>
+                    <div class="predictions">
+                        <div class="prediction-item">
+                            <div class="prediction-header">
+                                <span class="prediction-label">Khuyến Nghị Chính</span>
+                                <span id="primaryConfidence" class="confidence">0%</span>
+                            </div>
+                            <div id="primaryPrediction" class="prediction-outcome">-</div>
+                        </div>
+                        <div class="prediction-item">
+                            <div class="prediction-header">
+                                <span class="prediction-label">Dự Phòng</span>
+                                <span id="altConfidence" class="confidence">0%</span>
+                            </div>
+                            <div id="altPrediction" class="prediction-outcome">-</div>
+                        </div>
+                        <div class="prediction-item">
+                            <div class="prediction-header">
+                                <span class="prediction-label">Phân Tích</span>
+                                <span class="confidence analysis-indicator">AI</span>
+                            </div>
+                            <div id="analysisReasoning" class="prediction-reasoning">Chờ dữ liệu để phân tích...</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Betting Suggestions -->
+                    <div class="betting-suggestions">
+                        <h4><i class="fas fa-coins"></i> Betting Guide</h4>
+                        <div class="betting-info">
+                            <div class="betting-item">
+                                <span class="betting-label">Recommended Bet:</span>
+                                <span id="recommendedBet" class="betting-value">-</span>
+                            </div>
+                            <div class="betting-item">
+                                <span class="betting-label">Risk Level:</span>
+                                <span id="riskLevel" class="betting-value">-</span>
+                            </div>
+                            <div class="betting-item">
+                                <span class="betting-label">Unit Size:</span>
+                                <span id="unitSize" class="betting-value">-</span>
+                            </div>
+                            <div class="betting-item">
+                                <span class="betting-label">Strategy:</span>
+                                <span id="strategy" class="betting-value">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Game Input -->
+                <div class="card">
+                    <h3><i class="fas fa-gamepad"></i> Game Input</h3>
+                    <div class="input-section">
+                        <div class="all-buttons-row">
+                            <button id="playerBtn" class="outcome-btn player">
+                                <i class="fas fa-user"></i> Player
+                            </button>
+                            <button id="bankerBtn" class="outcome-btn banker">
+                                <i class="fas fa-building"></i> Banker
+                            </button>
+                            <button id="tieBtn" class="outcome-btn tie">
+                                <i class="fas fa-handshake"></i> Tie
+                            </button>
+                            <button id="undoBtn" class="btn btn-secondary undo-btn">
+                                <i class="fas fa-undo"></i> Undo
+                            </button>
+                            <button id="deleteLastBtn" class="btn btn-danger delete-btn">
+                                <i class="fas fa-trash"></i> Xóa
+                            </button>
+                        </div>
+                        
+                        <!-- Game History Display -->
+                        <div class="game-history-section">
+                            <div class="history-header">
+                                <h4><i class="fas fa-history"></i> Lịch Sử Game</h4>
+                                <span id="handCount" class="hand-counter">0 hands</span>
+                            </div>
+                            <div id="gameHistory" class="game-history">
+                                <div class="history-placeholder">Chưa có dữ liệu game...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Statistics -->
+                <div class="card">
+                    <h3><i class="fas fa-chart-bar"></i> Thống Kê Game</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-label">Tổng Hands</div>
+                            <div id="totalHands" class="stat-value">0</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Player Wins</div>
+                            <div id="playerWins" class="stat-value">0</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Banker Wins</div>
+                            <div id="bankerWins" class="stat-value">0</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Ties</div>
+                            <div id="ties" class="stat-value">0</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Streak Hiện Tại</div>
+                            <div id="currentStreak" class="stat-value">-</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Streak Dài Nhất</div>
+                            <div id="longestStreak" class="stat-value">-</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel - Road Maps -->
+            <div class="right-panel">
+                <!-- Big Road -->
+                <div class="card roadmap-card">
+                    <h3><i class="fas fa-road"></i> Big Road</h3>
+                    <div id="bigRoad" class="roadmap big-road"></div>
+                </div>
+
+                <!-- Bead Plate -->
+                <div class="card roadmap-card">
+                    <h3><i class="fas fa-circle"></i> Bead Plate</h3>
+                    <div id="beadPlate" class="roadmap bead-plate"></div>
+                </div>
+
+                <!-- Derived Roads -->
+                <div class="derived-roads">
+                    <div class="card roadmap-card small">
+                        <h4>Big Eye Road</h4>
+                        <div id="bigEyeRoad" class="roadmap derived-road"></div>
+                    </div>
+                    <div class="card roadmap-card small">
+                        <h4>Small Road</h4>
+                        <div id="smallRoad" class="roadmap derived-road"></div>
+                    </div>
+                    <div class="card roadmap-card small">
+                        <h4>Cockroach Road</h4>
+                        <div id="cockroachRoad" class="roadmap derived-road"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Tracking -->
+        <div class="performance-section">
+            <div class="card">
+                <h3><i class="fas fa-trophy"></i> Prediction Performance</h3>
+                <div class="performance-stats">
+                    <div class="perf-item">
+                        <span class="perf-label">Predictions Made:</span>
+                        <span id="predictionsMade" class="perf-value">0</span>
+                    </div>
+                    <div class="perf-item">
+                        <span class="perf-label">Correct Predictions:</span>
+                        <span id="correctPredictions" class="perf-value">0</span>
+                    </div>
+                    <div class="perf-item">
+                        <span class="perf-label">Accuracy Rate:</span>
+                        <span id="accuracyRate" class="perf-value">0%</span>
+                    </div>
+                    <div class="perf-item">
+                        <span class="perf-label">Last 10 Accuracy:</span>
+                        <span id="recent10Accuracy" class="perf-value">0%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pattern Analysis Modal -->
+    <div id="patternModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Pattern Analysis</h2>
+            <div id="patternAnalysis"></div>
+        </div>
+    </div>
+
+    <script src="bridge_techniques.js"></script>
+    <script src="storage.js"></script>
+    <script src="algorithms.js"></script>
+    <script src="roadmaps.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
